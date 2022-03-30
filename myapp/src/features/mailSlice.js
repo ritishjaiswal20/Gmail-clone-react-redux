@@ -5,8 +5,8 @@ const initialState = {
   status: "idle",
 };
 
-export const counterSlice = createSlice({
-  name: "counter",
+export const mailSlice = createSlice({
+  name: "mail",
   initialState,
 
   reducers: {
@@ -23,6 +23,6 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
-export const selectCount = (state) => state.counter.value;
-export default counterSlice.reducer;
+export const { increment, decrement, incrementByAmount } = mailSlice.actions;
+export const selectmail = (state) => state.mail.value;
+export default mailSlice.reducer;
