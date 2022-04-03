@@ -1,5 +1,5 @@
 import { Checkbox, IconButton } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./EmailList.css";
 import InboxIcon from "@mui/icons-material/Inbox";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -13,9 +13,25 @@ import PeopleIcon from "@mui/icons-material/People";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Section from "./Section";
 import EmailRow from "./EmailRow";
+import db from './firebase'
 function EmailList() {
+  const[emails,setEmails]=useState([]);
+
+  useEffect(()=>{
+    db.collection("emails")
+    .orderBy("timeStamp","desc")
+    .onSnapshot((snapshot)=>
+    setEmails(
+      snapshot.docs.map((doc)=>({
+        id:doc.id,
+        data:doc.data(),
+      }))
+    )
+    )
+  },[])
   return (
     <div className="emailList">
+      
       <div className="emailList-setting">
         <div className="emailList-setting-left">
           <Checkbox />
