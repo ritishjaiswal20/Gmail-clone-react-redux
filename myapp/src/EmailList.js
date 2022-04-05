@@ -17,18 +17,17 @@ import db from './firebase'
 function EmailList() {
   const[emails,setEmails]=useState([]);
 
-  useEffect(()=>{
-    db.collection("emails")
-    .orderBy("timeStamp","desc")
-    .onSnapshot((snapshot)=>
-    setEmails(
-      snapshot.docs.map((doc)=>({
-        id:doc.id,
-        data:doc.data(),
-      }))
-    )
-    )
-  },[])
+  useEffect(() => {
+    db.collection("emails").orderBy("timestamp", "desc")
+        .onSnapshot(snapshot =>
+            setEmails(snapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data(),
+            }))
+            )
+        );
+}, [])
+
   return (
     <div className="emailList">
       
@@ -67,18 +66,16 @@ function EmailList() {
         <Section Icon={LocalOfferIcon} title="promations" color="green" />
       </div>
       <div className="emailList-list">
-        <EmailRow
-          title="twitch"
-          subject="hey follow stream"
-          description="this is a test"
-          time="10pm"
-        />
-        <EmailRow
-          title="twitch"
-          subject="hey follow stream"
-          description="this is a test and a best guy and a bad boy and he is doing a great job"
-          time="10pm"
-        />
+          {emails.map(({ id, data: { to, subject, message, timestamp } }) => (
+                    <EmailRow
+                        id={id}
+                        key={id}
+                        title={to}
+                        subject={subject}
+                        description={message}
+                        time={new Date(timestamp?.seconds * 1000).toUTCString()}
+                    />
+                ))} 
       </div>
     </div>
   );
